@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #eee;
+            overflow: hidden;
+        }
+
+        .icon {
+            width: 60px;
+            height: 60px;
+            background-color: #333;
+            margin: 10px;
+            position: absolute;
+        }
+
+        .icon:before,
+        .icon:after {
+            content: "";
+            position: absolute;
+            width: 42.4264px;
+            height: 42.4264px;
+            background-color: inherit;
+        }
+
+        .icon:before {
+            transform: rotate(45deg);
+            top: 8.7887px;
+            left: 8.7887px;
+        }
+
+        .icon:after {
+            transform: rotate(-45deg);
+            top: 8.7887px;
+            right: 8.7887px;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 80vh;
+            border: 1px solid #000;
+        }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+    <div class="flex flex-row">
+        <div class="flex-2">
+        </div>
+    </div>
+    <div class="container" id="test">
+    </div>
+    <script>
+        var test = document.querySelector('#test');
+        var numIcons = 10;
+        var minDist = 100; // Minimum distance between icons
+
+        for (let i = 0; i < numIcons; i++) {
+            const icon = document.createElement('div');
+            icon.classList.add('icon');
+            icon.setAttribute('data-speed', '4');
+            let x, y;
+
+            do {
+                x = Math.random() * (test.offsetWidth - icon.offsetWidth);
+                y = Math.random() * (test.offsetHeight - icon.offsetHeight);
+            } while (isTooClose(x, y));
+
+            icon.style.left = `${x}px`;
+            icon.style.top = `${y}px`;
+
+            test.appendChild(icon);
+        }
+
+        function isTooClose(x, y) {
+            const icons = document.querySelectorAll('.icon');
+
+            for (const otherIcon of icons) {
+                const otherX = parseFloat(otherIcon.style.left);
+                const otherY = parseFloat(otherIcon.style.top);
+
+                const dist = Math.sqrt(Math.pow(x - otherX, 2) + Math.pow(y - otherY, 2));
+
+                if (dist < minDist) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        document.addEventListener('mousemove', parallax);
+        function parallax(e) {
+            const icons = document.querySelectorAll('.icon');
+            Array.from(icons).forEach(icon => {
+                const speed = icon.getAttribute('data-speed');
+                const x = (window.innerWidth - e.pageX * speed) / 100;
+                const y = (window.innerHeight - e.pageY * speed) / 100;
+                icon.style.transform = `translateX(${x}px) translateY(${y}px)`;
+            });
+        }
+    </script>
+</body>
+
+</html>
