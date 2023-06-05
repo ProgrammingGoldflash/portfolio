@@ -1,17 +1,13 @@
+</html>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tailwind CSS Layout</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #eee;
-            overflow: hidden;
-        }
-
         .icon {
             width: 60px;
             height: 60px;
@@ -43,36 +39,61 @@
 
         .container {
             position: relative;
-            width: 100%;
-            height: 80vh;
-            border: 1px solid #000;
+            height: 50%;
+            padding: 30px;
         }
     </style>
-    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
-    <div class="flex flex-row">
-        <div class="flex-2">
+<body class="flex flex-col min-h-screen">
+    <!-- Top bar -->
+    <header class="bg-blue-500 text-white p-4">
+        <h1>Top Bar</h1>
+    </header>
+
+    <!-- Main Body -->
+    <main class="flex flex-col md:flex-row flex-grow min-h-screen">
+        <div class="md:w-2/6 bg-gray-300 p-4 overflow-auto">
+
         </div>
+
+        <div class="md:w-4/6 bg-gray-400 p-4">
+            <div class="container" id="test">
+            </div>
+        </div>
+    </main>
+
+    <div class="w-full bg-gray-500 p-4 min-h-screen">
+        <h2>ROW</h2>
     </div>
-    <div class="container" id="test">
-    </div>
+
+    <footer class="bg-blue-500 text-white p-4">
+        <h1>Footer</h1>
+    </footer>
+
     <script>
         var test = document.querySelector('#test');
-        var numIcons = 10;
-        var minDist = 100; // Minimum distance between icons
+        var numIcons = 7;
+        var minDist = 100;
+
+        const maxAttempts = 1000;
 
         for (let i = 0; i < numIcons; i++) {
             const icon = document.createElement('div');
             icon.classList.add('icon');
-            icon.setAttribute('data-speed', '4');
-            let x, y;
+            icon.setAttribute('data-speed', (Math.random() * 3) + 1);
+            let x, y, attempts = 0;
 
             do {
-                x = Math.random() * (test.offsetWidth - icon.offsetWidth);
-                y = Math.random() * (test.offsetHeight - icon.offsetHeight);
-            } while (isTooClose(x, y));
+                x = Math.random() * (test.offsetWidth - icon.offsetWidth - 150);
+                y = Math.random() * (test.offsetHeight - icon.offsetHeight - 150);
+                attempts++;
+            } while (isTooClose(x, y) && attempts < maxAttempts);
+
+            if (attempts >= maxAttempts) {
+                console.error('Could not find a valid position for icon', i);
+                continue;
+            }
 
             icon.style.left = `${x}px`;
             icon.style.top = `${y}px`;
@@ -108,6 +129,7 @@
             });
         }
     </script>
+
 </body>
 
 </html>
