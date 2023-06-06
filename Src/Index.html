@@ -1,40 +1,16 @@
-</html>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tailwind CSS Layout</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .icon {
-            width: 60px;
-            height: 60px;
-            background-color: #333;
+            width: 80px;
+            height: 90px;
             margin: 10px;
             position: absolute;
-        }
-
-        .icon:before,
-        .icon:after {
-            content: "";
-            position: absolute;
-            width: 42.4264px;
-            height: 42.4264px;
-            background-color: inherit;
-        }
-
-        .icon:before {
-            transform: rotate(45deg);
-            top: 8.7887px;
-            left: 8.7887px;
-        }
-
-        .icon:after {
-            transform: rotate(-45deg);
-            top: 8.7887px;
-            right: 8.7887px;
         }
 
         .container {
@@ -51,19 +27,19 @@
         <h1>Top Bar</h1>
     </header>
 
-    <!-- Main Body -->
-    <main class="flex flex-col md:flex-row flex-grow min-h-screen">
+
+    <main class="flex flex-col md:flex-row flex-grow">
         <div class="md:w-2/6 bg-gray-300 p-4 overflow-auto">
 
         </div>
 
         <div class="md:w-4/6 bg-gray-400 p-4">
-            <div class="container" id="test">
+            <div class="container" id="techStack">
             </div>
         </div>
     </main>
 
-    <div class="w-full bg-gray-500 p-4 min-h-screen">
+    <div class="w-full bg-gray-500 p-4">
         <h2>ROW</h2>
     </div>
 
@@ -71,65 +47,77 @@
         <h1>Footer</h1>
     </footer>
 
+    <script src="https://code.jquery.com/jquery-3.7.0.slim.min.js" integrity="sha256-tG5mcZUtJsZvyKAxYLVXrmjKBVLd6VpVccqz/r4ypFE=" crossorigin="anonymous"></script>
     <script>
-        var test = document.querySelector('#test');
-        var numIcons = 7;
-        var minDist = 100;
+        var test = document.querySelector('#techStack');
+        var myTechStack = ["azure.png", "csharp.png", "dotnet.png", "javascript.png", "ms_sql_server.png", "visual_studio.png", "visual_studio_code.png", "blazor.png", "postman.png", "git.png", "html.png", "css.png", "webassembly.png", "docker.png"];
+        var numIcons = myTechStack.length;
 
-        const maxAttempts = 1000;
+        // function to generate the nth number in the Halton sequence
+        function halton(n, base) {
+            var result = 0;
+            var f = 1 / base;
+            var i = n;
+            while (i > 0) {
+                result = result + f * (i % base);
+                i = Math.floor(i / base);
+                f = f / base;
+            }
+            return result;
+        }
 
+        // add all icons to the DOM at quasi-random positions
         for (let i = 0; i < numIcons; i++) {
             const icon = document.createElement('div');
             icon.classList.add('icon');
             icon.setAttribute('data-speed', (Math.random() * 3) + 1);
-            let x, y, attempts = 0;
 
-            do {
-                x = Math.random() * (test.offsetWidth - icon.offsetWidth - 150);
-                y = Math.random() * (test.offsetHeight - icon.offsetHeight - 150);
-                attempts++;
-            } while (isTooClose(x, y) && attempts < maxAttempts);
+            // calculate the icon's position using the Halton sequence
+            let padding = Math.floor((Math.random() * 60) + 2);  // Adjust this value to change the space between icons.
+            let x = padding + halton(i, 2) * (test.offsetWidth - icon.offsetWidth - 2 * padding);
+            let y = padding + halton(i, 3) * (test.offsetHeight - icon.offsetHeight - 2 * padding);
 
-            if (attempts >= maxAttempts) {
-                console.error('Could not find a valid position for icon', i);
-                continue;
-            }
+            // Create img element, set its source to the icon, and append it to the icon div
+            const img = document.createElement('img');
+            img.src = './Images/TechStack/' + myTechStack[i]; // Using `icons` array
+            icon.appendChild(img);
 
             icon.style.left = `${x}px`;
             icon.style.top = `${y}px`;
-
             test.appendChild(icon);
         }
 
-        function isTooClose(x, y) {
-            const icons = document.querySelectorAll('.icon');
+        $(document).ready(function () {
+            $(".icon").each(function () {
+                let randomDuration = Math.random() * 2 + 1; // Between 1 and 2 seconds
+                let randomDistance = Math.random() * 3 + 1; // Between 2px and 7px
+                let randomDirectionX = Math.random() > 0.5 ? 2 : -1; // Randomly choose -1 or 1
+                let randomDirectionY = Math.random() > 0.5 ? 2 : -1; // Randomly choose -1 or 1
 
-            for (const otherIcon of icons) {
-                const otherX = parseFloat(otherIcon.style.left);
-                const otherY = parseFloat(otherIcon.style.top);
+                // Generate the keyframes string
+                let keyframes = `
+                    @keyframes float${this.id} {
+                        0%, 100% {
+                            transform: translate(0, 0);
+                        }
+                        50% {
+                            transform: translate(${randomDistance * randomDirectionX}px, ${randomDistance * randomDirectionY}px);
+                        }
+                    }
+                `;
 
-                const dist = Math.sqrt(Math.pow(x - otherX, 2) + Math.pow(y - otherY, 2));
+                // Create a new style element
+                let styleElement = document.createElement("style");
+                styleElement.textContent = keyframes;
+                document.head.appendChild(styleElement);
 
-                if (dist < minDist) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        document.addEventListener('mousemove', parallax);
-        function parallax(e) {
-            const icons = document.querySelectorAll('.icon');
-            Array.from(icons).forEach(icon => {
-                const speed = icon.getAttribute('data-speed');
-                const x = (window.innerWidth - e.pageX * speed) / 100;
-                const y = (window.innerHeight - e.pageY * speed) / 100;
-                icon.style.transform = `translateX(${x}px) translateY(${y}px)`;
+                // Apply the animation to the icon
+                $(this).css({
+                    animation: `float${this.id} ${randomDuration}s ease-in-out infinite`
+                });
             });
-        }
+        });
     </script>
-
 </body>
 
 </html>
