@@ -12,45 +12,86 @@
             margin: 10px;
             position: absolute;
         }
-
+        
         .container {
             position: relative;
             height: 50%;
             padding: 30px;
         }
-    </style>
+        
+        .custom-body {
+            background-image: url("./Images/wallpaper.jpg");
+            background-size: auto;
+            filter: grayscale(100%);
+            background-position: 100% 0;
+            background-size:50%;
+            position: relative; /* Added to ensure .right-column is positioned relative to the body */
+        }
+        
+        .right-column {
+            background: linear-gradient(90deg, rgba(109,109,111,1) 0%, rgba(0,0,0,1) 100%);
+            clip-path: polygon(40% 0, 100% 0, 100% 100%, 30% 100%);
+            position: absolute;
+            z-index: -1; /* Placed below the rest of the content */
+        }
+        
+        header {
+            min-height: 5vh;
+        }
+        
+        main {
+            min-height: 95vh;
+        }
+        </style>
 </head>
 
-<body class="flex flex-col min-h-screen">
-    <!-- Top bar -->
-    <header class="bg-blue-500 text-white p-4">
+<body class="flex flex-col min-h-screen custom-body" id="top">
+     <!-- Top bar -->
+     <header class="bg-gray-500 text-white p-4">
         <h1>Top Bar</h1>
     </header>
 
-
     <main class="flex flex-col md:flex-row flex-grow">
-        <div class="md:w-2/6 bg-gray-300 p-4 overflow-auto">
-
+        <!-- Left Column -->
+        <div class="md:w-2/6 p-4 overflow-auto">
+            <div class="flex flex-col items-center space-y-4">
+                <img src="profile_picture.jpg" alt="Profile Picture" class="w-32 h-32 rounded-full">
+                <h2 class="text-xl font-bold">Name</h2>
+                <p class="text-center">Short person description here. This can span multiple lines and provide more detail about the person.</p>
+                <div class="flex space-x-4">
+                    <a href="#"><img src="facebook_icon.png" alt="Facebook"></a>
+                    <a href="#"><img src="twitter_icon.png" alt="Twitter"></a>
+                    <a href="#"><img src="linkedin_icon.png" alt="LinkedIn"></a>
+                    <a href="#"><img src="instagram_icon.png" alt="Instagram"></a>
+                </div>
+            </div>
         </div>
 
-        <div class="md:w-4/6 bg-gray-400 p-4">
+        <!-- The polygon that spans the entire width -->
+        <div class="right-column absolute w-full h-full"></div>
+        
+        <!-- Right Column -->
+        <div class="md:w-4/6 p-4">
             <div class="container" id="techStack">
+            </div>
+
+            <div class="container" id="experience">
             </div>
         </div>
     </main>
 
-    <div class="w-full bg-gray-500 p-4">
+    <div class="w-full p-4">
         <h2>ROW</h2>
     </div>
 
-    <footer class="bg-blue-500 text-white p-4">
+    <footer class="text-white p-4">
         <h1>Footer</h1>
     </footer>
-
     <script src="https://code.jquery.com/jquery-3.7.0.slim.min.js" integrity="sha256-tG5mcZUtJsZvyKAxYLVXrmjKBVLd6VpVccqz/r4ypFE=" crossorigin="anonymous"></script>
     <script>
         var test = document.querySelector('#techStack');
         var myTechStack = ["azure.png", "csharp.png", "dotnet.png", "javascript.png", "ms_sql_server.png", "visual_studio.png", "visual_studio_code.png", "blazor.png", "postman.png", "git.png", "html.png", "css.png", "webassembly.png", "docker.png"];
+        var experience = ["angular.png", "cplusplus.png", "firebase.png", "grafana.png", "graphql.png", "java.png", "mysql.png", "next_js.png", "node_js.png", "open_api.png", "php.png", "react.png", "redux.png", "typescript.png"];
         var numIcons = myTechStack.length;
 
         // function to generate the nth number in the Halton sequence
@@ -89,8 +130,8 @@
 
         $(document).ready(function () {
             $(".icon").each(function () {
-                let randomDuration = Math.random() * 2 + 1; // Between 1 and 2 seconds
-                let randomDistance = Math.random() * 3 + 1; // Between 2px and 7px
+                let randomDuration = Math.random() * 4 + 1; // Between 1 and 2 seconds
+                let randomDistance = Math.random() * 2 + 1; // Between 2px and 7px
                 let randomDirectionX = Math.random() > 0.5 ? 2 : -1; // Randomly choose -1 or 1
                 let randomDirectionY = Math.random() > 0.5 ? 2 : -1; // Randomly choose -1 or 1
 
@@ -117,6 +158,19 @@
                 });
             });
         });
+
+        $(document).ready(function() {
+            var movementStrength = 8;
+            var height = movementStrength / $(window).height();
+            var width = movementStrength / $(window).width();
+            $("#top").mousemove(function(e){
+                    var pageX = e.pageX - ($(window).width() / 2);
+                    var pageY = e.pageY - ($(window).height() / 2);
+                    var newvalueX = width * pageX * -1 - 25;
+                    var newvalueY = height * pageY * -1 - 50;
+                    $('#top').css("background-position", newvalueX+"px     "+newvalueY+"px");
+            });
+            });
     </script>
 </body>
 
