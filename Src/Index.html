@@ -67,6 +67,14 @@
                 transform: translateY(-5px)
             }
         }
+
+        #scroll-down {
+            -webkit-animation: bounce 3s infinite ease-in-out;
+            -o-animation: bounce 3s infinite ease-in-out;
+            -ms-animation: bounce 3s infinite ease-in-out;
+            -moz-animation: bounce 3s infinite ease-in-out;
+            animation: bounce 3s infinite ease-in-out;
+        }
     </style>
 </head>
 
@@ -103,6 +111,12 @@
                 class="bg-gray-300 h-[284px] w-[284px] top-[379px] left-[1005px] rounded-full justify-self-start self-center">
             </div>
         </div>
+
+        <div id="scroll-down"
+            class="absolute inset-x-0 bottom-10 flex flex-col justify-center items-center text-gray-700">
+            <i class="fa-solid fa-computer-mouse mb-3"></i>
+            <i class="fa-solid fa-angles-down fa-sm"></i>
+        </div>
     </main>
 
     <div class="flex flex-col md:flex-row flex-grow h-screen relative h-screen">
@@ -116,6 +130,8 @@
 
         </div>
     </div>
+
+
 
     <div class="w-full p-4 h-screen">
         <h5><a id="example"></a>Example headline</h5>
