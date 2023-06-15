@@ -120,23 +120,32 @@
     </main>
 
     <div class="flex flex-col md:flex-row flex-grow h-screen relative h-screen">
-        <div class="md:w-1/2 p-4 grid">
-            <div class="container" id="techStack">
+        <div class="md:w-1/2 p-4 flex flex-col">
+            <div class="text-center w-full font-bold uppercase my-8 text-xl">
+                Tools and technologies I use on a daily basis
             </div>
-            <div class="container" id="experience">
+            <div class="container" id="techStack" style="height: 100%;">
             </div>
         </div>
+        <div class="md:w-1/2 p-4 flex flex-col bg-black bg-opacity-10 justify-end content-center">
+            <div class="text-center w-full font-bold uppercase my-8 text-xl">
+                Technologies that I used in projects
+            </div>
+            <div class="container" id="experience" style="height: 100%;">
+            </div>
+        </div>
+    </div>
+
+    <div class="flex flex-col md:flex-row flex-grow h-screen relative h-screen">
         <div class="md:w-1/2 p-4 grid bg-black bg-opacity-10 justify-end content-center">
+            
+        </div>
 
+        <div class="md:w-1/2 p-4 grid">
+            
         </div>
     </div>
-
-
-
-    <div class="w-full p-4 h-screen">
-        <h5><a id="example"></a>Example headline</h5>
-    </div>
-
+    
     <footer class="text-white p-4">
         <h1>Footer</h1>
     </footer>
@@ -145,10 +154,20 @@
         integrity="sha256-tG5mcZUtJsZvyKAxYLVXrmjKBVLd6VpVccqz/r4ypFE=" crossorigin="anonymous"></script>
 
     <script>
-        var test = document.querySelector('#techStack');
+        
         var myTechStack = ["azure.png", "csharp.png", "dotnet.png", "javascript.png", "ms_sql_server.png", "visual_studio.png", "visual_studio_code.png", "blazor.png", "postman.png", "git.png", "html.png", "css.png", "webassembly.png", "docker.png"];
-        var experience = ["angular.png", "cplusplus.png", "firebase.png", "grafana.png", "graphql.png", "java.png", "mysql.png", "next_js.png", "node_js.png", "open_api.png", "php.png", "react.png", "redux.png", "typescript.png"];
+        var experience = ["angular.png", "cplusplus.png", "firebase.png", "grafana.png", "graphql.png", "java.png", "mysql.png", "next_js.png", "node_js.png", "open_api.png", "php.png", "react.png", "redux.png", "typescript.png", "nginx.png", "mongo_db.png"];
         var numIcons = myTechStack.length;
+
+        init();
+
+        function init() {
+            var test = document.querySelector('#techStack');
+            positionIcons(test, myTechStack, './Images/TechStack');
+
+            test = document.querySelector('#experience');
+            positionIcons(test, experience, './Images/Experience');
+        }
 
         function halton(n, base) {
             var result = 0;
@@ -162,22 +181,24 @@
             return result;
         }
 
-        for (let i = 0; i < numIcons; i++) {
-            const icon = document.createElement('div');
-            icon.classList.add('icon');
-            icon.setAttribute('data-speed', (Math.random() * 3) + 1);
+        function positionIcons(parent, iconArray, iconBasePath) {
+            for (let i = 0; i < iconArray.length; i++) {
+                const icon = document.createElement('div');
+                icon.classList.add('icon');
+                icon.setAttribute('data-speed', (Math.random() * 3) + 1);
 
-            let padding = Math.floor((Math.random() * 60) + 2);
-            let x = padding + halton(i, 2) * (test.offsetWidth - icon.offsetWidth - 2 * padding);
-            let y = padding + halton(i, 3) * (test.offsetHeight - icon.offsetHeight - 2 * padding);
+                let padding = Math.floor((Math.random() * 50) + 2);
+                let x = padding + halton(i, 2) * (parent.offsetWidth - icon.offsetWidth - 2 * padding);
+                let y = padding + halton(i, 3) * (parent.offsetHeight - icon.offsetHeight - 2 * padding);
 
-            const img = document.createElement('img');
-            img.src = './Images/TechStack/' + myTechStack[i];
-            icon.appendChild(img);
+                const img = document.createElement('img');
+                img.src = iconBasePath + '/' + iconArray[i];
+                icon.appendChild(img);
 
-            icon.style.left = `${x}px`;
-            icon.style.top = `${y}px`;
-            test.appendChild(icon);
+                icon.style.left = `${x}px`;
+                icon.style.top = `${y}px`;
+                parent.appendChild(icon);
+            }
         }
 
         $(document).ready(function () {
@@ -205,19 +226,6 @@
                 $(this).css({
                     animation: `float${this.id} ${randomDuration}s ease-in-out infinite`
                 });
-            });
-        });
-
-        $(document).ready(function () {
-            var movementStrength = 8;
-            var height = movementStrength / $(window).height();
-            var width = movementStrength / $(window).width();
-            $("#top").mousemove(function (e) {
-                var pageX = e.pageX - ($(window).width() / 2);
-                var pageY = e.pageY - ($(window).height() / 2);
-                var newvalueX = width * pageX * -1 - 25;
-                var newvalueY = height * pageY * -1 - 50;
-                $('#top').css("background-position", newvalueX + "px     " + newvalueY + "px");
             });
         });
     </script>
