@@ -1,18 +1,10 @@
-<script setup lang="ts">
-
-import TheWelcome from '../components/TheWelcome.vue'
+<script lang="ts" setup>
+import TechStackIcon from '../classes/TechStackIcon.vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faCodeBranch } from "@fortawesome/free-solid-svg-icons";
-import { faWrench } from "@fortawesome/free-solid-svg-icons";
-import { faNewspaper } from "@fortawesome/free-solid-svg-icons";
-import { faAnglesDown } from "@fortawesome/free-solid-svg-icons";
-import { faComputerMouse } from "@fortawesome/free-solid-svg-icons";
-library.add(faCodeBranch)
-library.add(faWrench)
-library.add(faNewspaper)
-library.add(faAnglesDown)
-library.add(faComputerMouse)
+import { faCodeBranch, faWrench, faNewspaper, faAnglesDown, faComputerMouse } from "@fortawesome/free-solid-svg-icons";
+
+library.add(faCodeBranch, faWrench, faNewspaper, faAnglesDown, faComputerMouse)
 </script>
 
 <template>
@@ -60,12 +52,9 @@ library.add(faComputerMouse)
         Tools and technologies I use on a daily basis
       </div>
       <div class="container" ref="techStack" style="height: 100%;">
-        <div
-          v-for="(tech, i) in myTechStack"
-          :key="i"
-          :style="{left: `${tech.positionX}px`, top: `${tech.positionY}px`, animation: `float${i} ${tech.duration}s ease-in-out infinite`}"
-          class="icon"
-        >
+        <div v-for="(tech, i) in myTechStack" :key="i"
+          :style="{ left: `${tech.positionX}px`, top: `${tech.positionY}px`, animation: `float${i} ${tech.duration}s ease-in-out infinite` }"
+          class="icon">
           <img :src="`./src/assets/images/techStack/${tech.icon}`" />
         </div>
       </div>
@@ -75,12 +64,9 @@ library.add(faComputerMouse)
         Technologies that I used in projects
       </div>
       <div class="container" ref="experience" style="height: 100%;">
-        <div
-          v-for="(exp, i) in experience"
-          :key="i"
-          :style="{left: `${exp.positionX}px`, top: `${exp.positionY}px`, animation: `float${i + myTechStack.length} ${exp.duration}s ease-in-out infinite`}"
-          class="icon"
-        >
+        <div v-for="(exp, i) in experience" :key="i"
+          :style="{ left: `${exp.positionX}px`, top: `${exp.positionY}px`, animation: `float${i + myTechStack.length} ${exp.duration}s ease-in-out infinite` }"
+          class="icon">
           <img :src="`./src/assets/images/experience/${exp.icon}`" />
         </div>
       </div>
@@ -101,7 +87,7 @@ library.add(faComputerMouse)
 <script lang="ts">
 export default {
   name: "TechStackComponent",
-  data() {
+  data(): { myTechStack: TechStackIcon[]; experience: TechStackIcon[] } {
     return {
       myTechStack: [],
       experience: [],
@@ -110,16 +96,16 @@ export default {
   mounted() {
     this.myTechStack = this.initIcons(
       ["azure.png", "csharp.png", "dotnet.png", "javascript.png", "ms_sql_server.png", "visual_studio.png", "visual_studio_code.png", "blazor.png", "postman.png", "git.png", "html.png", "css.png", "webassembly.png", "docker.png"],
-      this.$refs.techStack
+      this.$refs.techStack as HTMLElement
     );
     this.experience = this.initIcons(
       ["angular.png", "cplusplus.png", "firebase.png", "grafana.png", "graphql.png", "java.png", "mysql.png", "next_js.png", "node_js.png", "open_api.png", "php.png", "react.png", "redux.png", "typescript.png", "nginx.png", "mongo_db.png"],
-      this.$refs.experience
+      this.$refs.experience as HTMLElement
     );
     this.appendStyles();
   },
   methods: {
-    halton(n, base) {
+    halton(n: number, base: number) {
       var result = 0;
       var f = 1 / base;
       var i = n;
@@ -130,7 +116,7 @@ export default {
       }
       return result;
     },
-    initIcons(iconArray, parent) {
+    initIcons(iconArray: Array<string>, parent: HTMLElement) {
       return iconArray.map((icon, i) => {
         let padding = Math.floor(Math.random() * 50 + 2);
         let x = padding + this.halton(i, 2) * (parent.offsetWidth - 5 * padding);
@@ -138,7 +124,7 @@ export default {
         let duration = Math.random() * 4 + 1;
         let distanceX = Math.random() * 2 + 1;
         let distanceY = Math.random() * 2 + 1;
-        return { icon, positionX: x, positionY: y, duration, distanceX, distanceY };
+        return new TechStackIcon(icon, x, y, duration, distanceX, distanceY);
       });
     },
     appendStyles() {
