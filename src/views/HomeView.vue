@@ -3,6 +3,7 @@ import TechStackIcon from '../classes/TechStackIcon.vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faCodeBranch, faWrench, faNewspaper, faAnglesDown, faComputerMouse } from "@fortawesome/free-solid-svg-icons";
+import ArticleList from '../components/ArticlesComponent.vue'
 
 library.add(faCodeBranch, faWrench, faNewspaper, faAnglesDown, faComputerMouse)
 </script>
@@ -19,15 +20,15 @@ library.add(faCodeBranch, faWrench, faNewspaper, faAnglesDown, faComputerMouse)
           person.
         </p>
         <!-- <a href="#example">Skills</a> -->
-        <a href="#techstack" class="bg-orange-600 text-white font-semibold p-1 rounded-md">
+        <a href="#techstack" class="bg-blue-800 text-white font-semibold p-1 rounded-md">
           <font-awesome-icon icon="fa-solid fa-code-branch" />
           techstack
         </a>
-        <a href="#projects-articles" class="bg-orange-500 text-white font-semibold p-1 rounded-md">
+        <a href="#projects-articles" class="bg-blue-900 text-white font-semibold p-1 rounded-md">
           <font-awesome-icon icon="fa-solid fa-wrench" />
           projects
         </a>
-        <a href="#projects-articles" class="bg-orange-400 text-white font-semibold p-1 rounded-md">
+        <a href="#projects-articles" class="bg-blue-950 text-white font-semibold p-1 rounded-md">
           <font-awesome-icon icon="fa-solid fa-newspaper" />
           articles
         </a>
@@ -35,9 +36,8 @@ library.add(faCodeBranch, faWrench, faNewspaper, faAnglesDown, faComputerMouse)
     </div>
 
     <div class="md:w-1/2 p-4 grid">
-      <div id='ellipse1'
-        class="bg-gray-300 h-[284px] w-[284px] top-[379px] left-[1005px] rounded-full justify-self-start self-center">
-      </div>
+      <img id='ellipse1' class="ellipse-image justify-self-start self-center"
+        :src="'./src/assets/images/profile-picture.png'" />
     </div>
 
     <div id="scroll-down" class="absolute inset-x-0 bottom-10 flex flex-col justify-center items-center text-gray-700">
@@ -77,13 +77,21 @@ library.add(faCodeBranch, faWrench, faNewspaper, faAnglesDown, faComputerMouse)
     </div>
   </div>
 
-  <div id="projects-articles" class="flex flex-col md:flex-row flex-grow relative h-screen">
+  <div id="projects-articles" class="flex flex-col md:flex-row flex-grow relative h-screen p-6">
     <div class="md:w-1/2 p-4 grid justify-end content-center">
-
+      <div class="horizontal-line-container">
+        <div class="horizontal-line"></div>
+        <h2 class="title">Articles that I wrote</h2>
+        <div class="horizontal-line"></div>
+      </div>
+      <article-list></article-list>
     </div>
 
-    <div class="md:w-1/2 p-4 grid">
-
+    <div class="md:w-1/2 p-4 grid justify-items-center">
+      <div class="bg-gray-100 shadow-xl rounded-lg px-4 py-6 text-center w-1/2 h-1/6">
+        <h2 class="text-xl font-medium text-gray-700">My open source projects</h2>
+        <p class="text-gray-600 mt-2">Coming soon...</p>
+      </div>
     </div>
   </div>
 </template>
@@ -91,6 +99,9 @@ library.add(faCodeBranch, faWrench, faNewspaper, faAnglesDown, faComputerMouse)
 <script lang="ts">
 export default {
   name: "TechStackComponent",
+  components: {
+    'article-list': ArticleList,
+  },
   data(): { myTechStack: TechStackIcon[]; experience: TechStackIcon[] } {
     return {
       myTechStack: [],
@@ -149,6 +160,13 @@ export default {
 </script>
 
 <style>
+#ellipse1 {
+  width: 284px;
+  height: 284px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
 .horizontal-line-container {
   display: flex;
   align-items: center;
