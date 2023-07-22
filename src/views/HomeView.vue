@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import TechStackIcon from '../classes/TechStackIcon.vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faCodeBranch, faWrench, faNewspaper, faAnglesDown, faComputerMouse } from "@fortawesome/free-solid-svg-icons";
+import { faGithub, faLinkedin, faDev } from "@fortawesome/free-brands-svg-icons";
 import ArticleList from '../components/ArticlesComponent.vue'
 
-library.add(faCodeBranch, faWrench, faNewspaper, faAnglesDown, faComputerMouse)
+library.add(faCodeBranch, faWrench, faNewspaper, faAnglesDown, faComputerMouse, faGithub, faLinkedin, faDev)
 </script>
 
 <template>
@@ -14,10 +14,12 @@ library.add(faCodeBranch, faWrench, faNewspaper, faAnglesDown, faComputerMouse)
   <main class="flex flex-col md:flex-row flex-grow h-screen relative">
     <div class="md:w-1/2 p-4 grid justify-end content-center">
       <div class="grid justify-end content-center text-center space-y-3">
-        <h2 class="text-xl font-bold uppercase z-1">Philip</h2>
+        <h2 class="text-xl font-bold italic uppercase z-1">Philip Ainberger</h2>
         <p class="">
-          Short person description here. This can span <br> multiple lines and provide more detail about the
-          person.
+          Since launching my development career in 2017, I've honed <br> my skills in the Microsoft domain, focusing on
+          .NET 6 and 7. <br>
+          I bridge the gap between cloud and on-premises systems, delivering <br> efficient and accessible solutions for a
+          diverse range of tech challenges.
         </p>
         <!-- <a href="#example">Skills</a> -->
         <a href="#techstack" class="bg-blue-800 text-white font-semibold p-1 rounded-md">
@@ -35,10 +37,27 @@ library.add(faCodeBranch, faWrench, faNewspaper, faAnglesDown, faComputerMouse)
       </div>
     </div>
 
-    <div class="md:w-1/2 p-4 grid">
-      <img id='ellipse1' class="ellipse-image justify-self-start self-center"
-        :src="'./src/assets/images/profile-picture.png'" />
+    <div class="md:w-1/2 p-4 grid place-items-start items-center">
+      <div class="text-center">
+        <img id='ellipse1' class="ellipse-image justify-self-center self-center"
+          :src="'./src/assets/images/profile-picture.png'" />
+
+        <div class="space-x-4 mt-4 flex justify-center">
+          <a href="https://github.com/ProgrammingGoldflash" target="_blank">
+            <font-awesome-icon icon="fa-brands fa-github" size="xl" />
+          </a>
+          <a href="https://linkedin.com/in/philip-ainberger-718424152/" target="_blank">
+            <font-awesome-icon icon="fa-brands fa-linkedin" size="xl" />
+          </a>
+          <a href="https://dev.to/philip-ainberger" target="_blank">
+            <font-awesome-icon icon="fa-brands fa-dev" size="xl" />
+          </a>
+        </div>
+      </div>
     </div>
+
+
+
 
     <div id="scroll-down" class="absolute inset-x-0 bottom-10 flex flex-col justify-center items-center text-gray-700">
       <font-awesome-icon icon="fa-solid fa-computer-mouse" />
@@ -55,8 +74,8 @@ library.add(faCodeBranch, faWrench, faNewspaper, faAnglesDown, faComputerMouse)
       </div>
       <div class="container" ref="techStack" style="height: 100%;">
         <div v-for="(tech, i) in myTechStack" :key="i" class="icon">
-          <img :src="`./src/assets/images/techStack/${tech.icon}`" />
-          <p class="icon-caption">{{ tech.icon.split('.').slice(0, -1).join('.') }}</p>
+          <img :src="`./src/assets/images/techStack/${tech}`" />
+          <p class="icon-caption">{{ tech.split('.').slice(0, -1).join('.') }}</p>
         </div>
       </div>
 
@@ -69,8 +88,8 @@ library.add(faCodeBranch, faWrench, faNewspaper, faAnglesDown, faComputerMouse)
       </div>
       <div class="container" ref="experience" style="height: 100%;">
         <div v-for="(exp, i) in experience" :key="i" class="icon">
-          <img :src="`./src/assets/images/experience/${exp.icon}`" />
-          <p class="icon-caption">{{ exp.icon.split('.').slice(0, -1).join('.') }}</p>
+          <img :src="`./src/assets/images/experience/${exp}`" />
+          <p class="icon-caption">{{ exp.split('.').slice(0, -1).join('.') }}</p>
         </div>
       </div>
 
@@ -102,45 +121,17 @@ export default {
   components: {
     'article-list': ArticleList,
   },
-  data(): { myTechStack: TechStackIcon[]; experience: TechStackIcon[] } {
+  data(): { myTechStack: string[]; experience: string[] } {
     return {
       myTechStack: [],
       experience: [],
     };
   },
   mounted() {
-    this.myTechStack = this.initIcons(
-      this.shuffleArray(["Azure.png", "CSharp.png", "dotNET.png", "Javascript.png", "SQLServer.png", "Visual Studio.png", "Visual Studio Code.png", "Blazor.png", "Postman.png", "Git.png", "Html.png", "Css.png", "WebAssembly.png", "Docker.png"]),
-      this.$refs.techStack as HTMLElement
-    );
-    this.experience = this.initIcons(
-      this.shuffleArray(["Angular.png", "C++.png", "Firebase.png", "Grafana.png", "GraphQL.png", "Java.png", "MySQL.png", "NextJS.png", "NodeJS.png", "OpenApi.png", "Php.png", "React.png", "Redux.png", "Typescript.png", "Nginx.png", "MongoDB.png"]),
-      this.$refs.experience as HTMLElement
-    );
+    this.myTechStack = this.shuffleArray(["Azure.png", "CSharp.png", "dotNET.png", "Javascript.png", "SQLServer.png", "Visual Studio.png", "Visual Studio Code.png", "Blazor.png", "Postman.png", "Git.png", "Html.png", "Css.png", "WebAssembly.png", "Docker.png"]);
+    this.experience = this.shuffleArray(["Angular.png", "C++.png", "Firebase.png", "Grafana.png", "GraphQL.png", "Java.png", "MySQL.png", "NextJS.png", "NodeJS.png", "OpenApi.png", "Php.png", "React.png", "Redux.png", "Typescript.png", "Nginx.png", "MongoDB.png"]);
   },
   methods: {
-    halton(n: number, base: number) {
-      var result = 0;
-      var f = 1 / base;
-      var i = n;
-      while (i > 0) {
-        result = result + f * (i % base);
-        i = Math.floor(i / base);
-        f = f / base;
-      }
-      return result;
-    },
-    initIcons(iconArray: Array<string>, parent: HTMLElement) {
-      return iconArray.map((icon, i) => {
-        let padding = Math.floor(Math.random() * 50 + 2);
-        let x = padding + this.halton(i, 2) * (parent.offsetWidth - 5 * padding);
-        let y = padding + this.halton(i, 3) * (parent.offsetHeight - 5 * padding);
-        let duration = Math.random() * 4 + 1;
-        let distanceX = Math.random() * 2 + 1;
-        let distanceY = Math.random() * 2 + 1;
-        return new TechStackIcon(icon, x, y, duration, distanceX, distanceY);
-      });
-    },
     shuffleArray(array: Array<string>) {
       let currentIndex = array.length, temporaryValue, randomIndex;
 
